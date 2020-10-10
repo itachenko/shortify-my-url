@@ -57,7 +57,7 @@ app.post('/url', async (req, res) => {
     redisClient.get(short, (err, reply) => {
         if (!reply) {
             redisClient.set(short, req.body.url);
-            res.render('index', { title: "Shortify My URL", shortUrl: `http://localhost/${short}`});
+            res.render('index', { title: "Shortify My URL", shortUrl: `http://shortify-my-url.herokuapp.com/${short}`});
         }
         else {
             res.send('You were unlucky, try once more.');
@@ -67,6 +67,4 @@ app.post('/url', async (req, res) => {
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running`);
-
-    console.log(`http://${process.env.HEROKU_APP_NAME}.herokuapp.com`);
 });
