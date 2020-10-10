@@ -67,4 +67,6 @@ app.post('/url', async (req, res) => {
 
 app.listen(process.env.PORT, () => {
     console.log(`Server is running`);
+
+    console.log(`http://${process.env.HEROKU_APP_NAME}.herokuapp.com`);
 });
