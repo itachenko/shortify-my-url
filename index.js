@@ -5,13 +5,10 @@ const Joi = require('joi');
 const { nanoid } = require('nanoid');
 const redis = require('redis');
 
-const redisClient = redis.createClient({
-    host: process.env.REDIS_HOST,
-    port: process.env.REDIS_PORT
-});
+const redisClient = redis.createClient(process.env.REDIS_URL);
 
 redisClient.on('connect', () => {
-    console.log(`Connected to the Redis [${process.env.REDIS_HOST}:${process.env.REDIS_PORT}]`);
+    console.log(`Connected to the Redis.`);
 });
 redisClient.on('error', (error) => {
     console.log(error);
