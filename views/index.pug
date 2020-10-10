@@ -1,0 +1,11 @@
+html
+    head
+        link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
+        title= title
+    body
+        header
+            h1= title
+        form(action="/url", method="POST")
+            input(type='text', name='url', placeholder='Put your long URL here')
+            input(type='submit', value='Make it short!')
+        span= shortUrl
