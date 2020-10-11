@@ -3,21 +3,12 @@ require('dotenv').config();
 const express = require('express');
 const Joi = require('joi');
 const { nanoid } = require('nanoid');
-const redis = require('redis');
-
-const redisClient = redis.createClient(process.env.REDIS_URL);
-
-redisClient.on('connect', () => {
-    console.log(`Connected to the Redis.`);
-});
-redisClient.on('error', (error) => {
-    console.log(error);
-});
+const { redisClient } = require('./services/redis');
 
 const app = express();
 
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'pug');
 app.use(express.static('./public'));
 
@@ -32,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/:url', async (req, res) => {
-    redisClient.get(req.params.url, (err, reply) => {
+    redisClient.GET(req.params.url, (err, reply) => {
         if (!reply) {
             res.render('not-found');
         }
@@ -52,10 +43,10 @@ app.post('/', async (req, res) => {
         });
     }
 
-    const short = nanoid(5).toLowerCase( );
-    redisClient.get(short, (err, reply) => {
+    const short = nanoid(5).toLowerCase();
+    redisClient.EXISTS(short, (err, reply) => {
         if (!reply) {
-            redisClient.set(short, req.body.url);
+            redisClient.SET(short, req.body.url);
             res.render('index', {
                 result: `http://shortify-my-url.herokuapp.com/${short}`,
                 count: dbSize
@@ -63,7 +54,7 @@ app.post('/', async (req, res) => {
         }
         else {
             res.render('index', {
-                result: `Wow! You are so lucky to get short URL which already in use. It is 1 in ${Math.pow((26+10), 5)} chanse.`,
+                error: `Wow! You are so lucky to get short URL which already in use. It is 1 in ${Math.pow((26+10), 5)} chanse.`,
                 count: dbSize
             });
         }
