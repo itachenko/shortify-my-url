@@ -47,7 +47,7 @@ app.post('/', async (req, res) => {
         await schema.validateAsync(req.body);
     } catch (error) {
         return res.render('index', {
-            result: 'Invalid URL',
+            error: 'Invalid URL',
             count: dbSize
         });
     }

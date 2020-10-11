@@ -6,12 +6,15 @@ html
     body
         header
             h1= title
-        form(action="/", method="POST", onsubmit="this.submit(); this.reset(); return false;")
+        form(action="/", method="POST")
             input(type='text', class='inputBox', name='url', placeholder='Put your long URL here')
             input(type='submit', class='btn-submit', value='Make it short!')
-        span= result
-        footer
-            if count > 0
+        if error
+            span #{error}
+        if result
+            span Your short url is: #{result}
+        if count > 0
+            footer
                 p We've already shortified #{count} URLs
 script
     include ../public/script.js
