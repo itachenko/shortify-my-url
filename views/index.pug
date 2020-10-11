@@ -1,3 +1,4 @@
+- var title = "Shortify My URL"
 html
     head
         link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
@@ -8,4 +9,6 @@ html
         form(action="/url", method="POST")
             input(type='text', name='url', placeholder='Put your long URL here')
             input(type='submit', value='Make it short!')
-        span= shortUrl
+        span= result
+        footer
+            p We've already shortified #{count} URLs

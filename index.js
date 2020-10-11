@@ -26,17 +26,13 @@ const schema = Joi.object({
 });
 
 app.get('/', (req, res) => {
-    res.render('index', { title: "Shortify My URL" });
+    res.render('index', { count: dbSize });
 });
 
 app.get('/:id', async (req, res) => {
-    const shortUrl = req.params.id;
-    redisClient.get(shortUrl, (err, reply) => {
+    redisClient.get(req.params.id, (err, reply) => {
         if (!reply) {
-            res.render('not-found', {
-                title: "Shortify My URL",
-                error: `Short URL '${shortUrl}' was not found`
-            });
+            res.render('not-found');
         }
         else {
             res.redirect(reply);
@@ -48,19 +44,19 @@ app.post('/url', async (req, res) => {
     try {
         await schema.validateAsync(req.body);
     } catch (error) {
-        res.status(400).send(error.message);
-        return;
+        res.render('index', { result: error.message } );
     }
 
     const short = nanoid(5);
-
     redisClient.get(short, (err, reply) => {
         if (!reply) {
             redisClient.set(short, req.body.url);
-            res.render('index', { title: "Shortify My URL", shortUrl: `http://shortify-my-url.herokuapp.com/${short}`});
+            res.render('index', { result: `http://shortify-my-url.herokuapp.com/${short}`});
         }
         else {
-            res.send('You were unlucky, try once more.');
+            res.render('index', {
+                result: `Wow! You are so lucky to get short URL which already in use. It is 1 in ${Math.pow((26+10), 5)} chanse.`
+            });
         }
     });
 });
@@ -68,3 +64,13 @@ app.post('/url', async (req, res) => {
 app.listen(process.env.PORT, () => {
     console.log(`Server is running`);
 });
+
+let dbSize = 0;
+setInterval(() => {
+    redisClient.DBSIZE((err, data) => {
+        if (err) {
+            console.log("An error occured on DBSIZE call");
+        }
+        dbSize = data;
+    })
+}, 10000);
