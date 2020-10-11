@@ -26,11 +26,13 @@ const schema = Joi.object({
 });
 
 app.get('/', (req, res) => {
-    res.render('index', { count: dbSize });
+    res.render('index', {
+        count: dbSize
+    });
 });
 
-app.get('/:id', async (req, res) => {
-    redisClient.get(req.params.id, (err, reply) => {
+app.get('/:url', async (req, res) => {
+    redisClient.get(req.params.url, (err, reply) => {
         if (!reply) {
             res.render('not-found');
         }
@@ -40,22 +42,29 @@ app.get('/:id', async (req, res) => {
     });
 });
 
-app.post('/url', async (req, res) => {
+app.post('/', async (req, res) => {
     try {
         await schema.validateAsync(req.body);
     } catch (error) {
-        res.render('index', { result: error.message } );
+        return res.render('index', {
+            result: 'Invalid URL',
+            count: dbSize
+        });
     }
 
-    const short = nanoid(5);
+    const short = nanoid(5).toLowerCase( );
     redisClient.get(short, (err, reply) => {
         if (!reply) {
             redisClient.set(short, req.body.url);
-            res.render('index', { result: `http://shortify-my-url.herokuapp.com/${short}`});
+            res.render('index', {
+                result: `http://shortify-my-url.herokuapp.com/${short}`,
+                count: dbSize
+            });
         }
         else {
             res.render('index', {
-                result: `Wow! You are so lucky to get short URL which already in use. It is 1 in ${Math.pow((26+10), 5)} chanse.`
+                result: `Wow! You are so lucky to get short URL which already in use. It is 1 in ${Math.pow((26+10), 5)} chanse.`,
+                count: dbSize
             });
         }
     });

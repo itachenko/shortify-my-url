@@ -12,3 +12,11 @@ body {
 header > h1 {
     text-align: center;
 }
+
+.inputBox {
+    margin: 10px;
+}
+
+.btn-submit {
+    margin: 10px;
+}

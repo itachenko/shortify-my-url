@@ -6,9 +6,12 @@ html
     body
         header
             h1= title
-        form(action="/url", method="POST")
-            input(type='text', name='url', placeholder='Put your long URL here')
-            input(type='submit', value='Make it short!')
+        form(action="/", method="POST", onsubmit="this.submit(); this.reset(); return false;")
+            input(type='text', class='inputBox', name='url', placeholder='Put your long URL here')
+            input(type='submit', class='btn-submit', value='Make it short!')
         span= result
         footer
-            p We've already shortified #{count} URLs
+            if count > 0
+                p We've already shortified #{count} URLs
+script
+    include ../public/script.js
