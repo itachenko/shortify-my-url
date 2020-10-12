@@ -1,6 +1,9 @@
 - var title = "Shortify My URL"
+- var resultText = "Your short url is: "
+- var countText = `We've already shortified ${count} URLs`
 html
     head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
         link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
         link(href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap" rel="stylesheet")
         title= title
@@ -14,8 +17,10 @@ html
             if error
                 span(class='main-error') #{error}
             if result
-                span(class='main-result') Your short url is: #{result}
+                span(class='main-result') #{resultText}
+                span(class='main-result result', id='main-result') #{result}
+                button(class='main-button-copy', onclick='copyToClipboard()') Copy
             if count > 0
-                p(class='main-count') We've already shortified #{count} URLs
+                p(class='main-count') #{countText}
 script
     include ../public/script.js

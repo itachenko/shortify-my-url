@@ -11,6 +11,7 @@
     --clr-dark: #0C0E36;
     --clr-light: #FFF;
     --clr-error: #F70058;
+    --clr-selected: #e9eee6;
 }
 
 body {
@@ -57,9 +58,15 @@ header {
 .main-form-input {
     background-color: transparent;
     border: none;
+    text-align: center;
     border-bottom: 2px solid;
-    caret-color: #56BC58;
+    transition: border-bottom-color 0.3s ease-in-out;
 }
+
+.main-form-input:focus {
+    outline: none;
+    border-bottom-color: #56BC58;
+  }
 
 .main-form-btn {
     cursor: pointer;
@@ -67,18 +74,44 @@ header {
     padding: 0.75em 1.25rem;
     border: 1px solid;
     border-radius: 5px;
+    background-color: transparent;
 }
 
 .main-form-btn:hover {
-    box-shadow: 0 0 0 0 #ffffff;
+    cursor: pointer;
+    background: var(--clr-selected);
+    transition: all 0.3s ease;
 }
 
 .main-error {
     padding: 1rem;
+    font-weight: 900;
     color: var(--clr-error);
 }
 
 .main-count {
     padding: 1rem;
     font-weight: 400;
+}
+
+.result {
+    background: var(--clr-selected);
+}
+
+.main-button-copy {
+    font-family: 'Work Sans', sans-serif;
+    font-weight: 400;
+    background-color: transparent;
+    border: none;
+    margin-left: 1rem;
+    padding: 0.5px;
+    text-align: top right;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.main-button-copy:hover {
+    cursor: pointer;
+    background: var(--clr-selected);
+    transition: all 0.3s ease;
 }
