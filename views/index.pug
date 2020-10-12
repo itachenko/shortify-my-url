@@ -2,19 +2,20 @@
 html
     head
         link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
+        link(href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap" rel="stylesheet")
         title= title
     body
         header
-            h1= title
-        form(action="/", method="POST")
-            input(type='text', class='inputBox', name='url', placeholder='Put your long URL here')
-            input(type='submit', class='btn-submit', value='Make it short!')
-        if error
-            span #{error}
-        if result
-            span Your short url is: #{result}
-        if count > 0
-            footer
-                p We've already shortified #{count} URLs
+            h1(class='title')= title
+        main(class='main')
+            form(class='main-form', action="/", method="POST")
+                input(class='main-form-input' ,type='text', name='url', placeholder='Put your long URL here')
+                input(class='main-form-btn', type='submit', value='Make it short!')
+            if error
+                span(class='main-error') #{error}
+            if result
+                span(class='main-result') Your short url is: #{result}
+            if count > 0
+                p(class='main-count') We've already shortified #{count} URLs
 script
     include ../public/script.js
