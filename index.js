@@ -48,7 +48,7 @@ app.post('/', async (req, res) => {
         if (!reply) {
             redisClient.SET(short, req.body.url);
             res.render('index', {
-                result: `http://shortify-my-url.herokuapp.com/${short}`,
+                result: `https://shortify-my-url.herokuapp.com/${short}`,
                 count: dbSize
             });
         }

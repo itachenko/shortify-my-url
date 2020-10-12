@@ -14,13 +14,13 @@ html
             form(class='main-form', action="/", method="POST")
                 input(class='main-form-input' ,type='text', name='url', placeholder='Put your long URL here')
                 input(class='main-form-btn', type='submit', value='Make it short!')
-            if error
-                span(class='main-error') #{error}
             if result
-                span(class='main-result') #{resultText}
-                span(class='main-result result', id='main-result') #{result}
+                span #{resultText}
+                span(class='main-result', id='main-result') #{result}
                 button(class='main-button-copy', onclick='copyToClipboard()') Copy
             if count > 0
                 p(class='main-count') #{countText}
+            if error
+                span(class='main-error') #{error}
 script
     include ../public/script.js
