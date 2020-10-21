@@ -1,6 +1,10 @@
 module.exports.check = function (toCheck) {
-  toCheck.forEach((variable) => {
-    if (process.env[variable] === undefined || !process.env[variable].trim())
-      throw new Error(`Required ENV variable [${variable}] is not set.`);
-  });
+  const missing = toCheck
+    .map((variable) => {
+      if (!process.env[variable]) return variable;
+    })
+    .filter(Boolean);
+  const count = missing.length;
+  if (count > 0)
+    throw new Error(`Required ENV ${count > 1 ? "variables" : "variable"} ${missing} ${count > 1 ? "are" : "is"} not set.`);
 };
