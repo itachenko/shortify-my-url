@@ -1,6 +1,6 @@
 if (process.env.NODE_ENV !== 'production')
     require('dotenv').config();
-require('./helpers/envVariables').check(["PORT", "REDIS_URL", "SITE_URL"]);
+require('./helpers/envVariables').check(["PORT", "REDIS_URL", "SITE_URL", "TTL_SECONDS"]);
 
 const express = require('express');
 const Joi = require('joi');
@@ -48,7 +48,7 @@ app.post('/', async (req, res) => {
     const short = nanoid(5).toLowerCase();
     redisClient.EXISTS(short, (err, reply) => {
         if (!reply) {
-            redisClient.SET(short, req.body.url);
+            redisClient.SETEX(short, process.env.TTL_SECONDS, req.body.url);
             res.render('index', {
                 result: `${process.env.SITE_URL}/${short}`,
                 count: dbSize
