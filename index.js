@@ -48,7 +48,7 @@ app.post('/', async (req, res) => {
         if (!reply) {
             redisClient.SET(short, req.body.url);
             res.render('index', {
-                result: `http://shortify.one/${short}`,
+                result: `http://www.shortify.one/${short}`,
                 count: dbSize
             });
         }
