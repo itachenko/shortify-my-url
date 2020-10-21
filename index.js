@@ -1,4 +1,5 @@
 require('dotenv').config();
+require('./helpers/envVariables').check(["PORT", "REDIS_URL", "SITE_URL"]);
 
 const express = require('express');
 const Joi = require('joi');
