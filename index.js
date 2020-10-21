@@ -1,4 +1,5 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production')
+    require('dotenv').config();
 require('./helpers/envVariables').check(["PORT", "REDIS_URL", "SITE_URL"]);
 
 const express = require('express');
