@@ -1,0 +1,13 @@
+- var title = "Shortify My URL"
+
+html
+    block head
+        meta(name="viewport", content="width=device-width, initial-scale=1")
+        link(rel='stylesheet', href='/css/style.css', type='text/css')
+        link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap")
+        title= title
+    body
+        header
+            h1(class='title')= title
+        block main
+block script

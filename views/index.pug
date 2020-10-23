@@ -1,25 +1,19 @@
-- var resultText = "Your short url is: "
-- var countText = `We've already shortified ${count} URLs`
-html
-    head
-        meta(name="viewport", content="width=device-width, initial-scale=1")
-        link(rel='stylesheet', href='/stylesheets/style.css', type='text/css')
-        link(rel="stylesheet", href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap")
-        title= title
-    body
-        header
-            h1(class='title')= title
-        main(class='main')
-            form(class='main-form', id='main-form')
-                input(class='main-form-input', type='text', id='main-form-input', placeholder='Put your long URL here')
-                input(class='main-form-btn', type='submit', value='Make it short!')
-            if count > 0
-                p(class='main-count') #{countText}
-            if result
-                span #{resultText}
-                span(class='main-result', id='main-result') #{result}
-                button(class='main-button-copy', onclick='copyToClipboard()') Copy
-            if error
-                span(class='main-error') #{error}
-script
-    include ../public/script.js
+extends layout
+
+append main
+    main(class='main')
+        form(class='main-form', id='main-form', action='/url', method='POST')
+            input(class='main-form-input', type='text', name='url', placeholder='Put your long URL here')
+            input(class='main-form-btn', type='submit', value='Make it short!')
+        if count > 0
+            - var countText = `We've already shortified ${count} URLs`
+            p(class='main-count') #{countText}
+        if result
+            - var resultText = "Your short url is: "
+            span #{resultText}
+            span(class='main-result', id='main-result') #{result}
+            button(class='main-button-copy', onclick='copyToClipboard()') Copy
+        if error
+            span(class='main-error') #{error}
+append script
+    script(src='../js/script.js')

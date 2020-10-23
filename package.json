@@ -1,14 +1,16 @@
 {
   "name": "shortify-my-url",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Simple URL shortener.",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "Ivan Tachenko [ivan.tachenko@gmail.com]",
+  "keywords": [
+    "express.ls", "redis", "pug"
+  ],
+  "author": "Ivan Tachenko",
   "license": "MIT",
   "dependencies": {
     "express": "4.17.1",
