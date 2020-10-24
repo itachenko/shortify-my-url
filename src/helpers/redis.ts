@@ -1,12 +1,13 @@
 import { RedisClient, createClient } from "redis";
+import logger from "./logger";
 
 const redisClient: RedisClient = createClient(process.env.REDIS_URL as string);
 
 redisClient.once("connect", () => {
-  console.log("Connected to the Redis.");
+  logger.info("Connected to the Redis.");
 });
 redisClient.on("error", (error) => {
-  console.error(`Smth wrong with Redis.\nReason: ${error}`);
+  logger.error(`Smth wrong with Redis.\nReason: ${error}`);
 });
 
 export function getDbSize(): Promise<number> {
@@ -39,7 +40,7 @@ export function checkIfExist(shortUrl: string): Promise<boolean> {
 
 export function saveShortUrl(shortUrl: string,longUrl: string): Promise<string> {
   return new Promise((resolve, reject) => {
-    const ttl = parseInt(process.env.TTL_SECONDS as string);
+    const ttl: number = parseInt(process.env.TTL_SECONDS as string, 10);
     redisClient.SETEX(shortUrl, ttl, longUrl, (err, data) => {
       if (err) reject(err);
         resolve(data);
