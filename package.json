@@ -4,9 +4,9 @@
   "description": "Simple URL shortener.",
   "main": "build/server.js",
   "scripts": {
+    "postinstall": "tsc && npm run copy:files",
+    "start": "node build/server.js",
     "copy:files": "ts-node tools/copyfiles.ts",
-    "build": "tsc",
-    "start": "npm run build && npm run copy:files && node build/server.js",
     "dev": "nodemon src/server.ts"
   },
   "keywords": [
@@ -14,6 +14,9 @@
     "redis",
     "pug"
   ],
+  "engines": {
+    "node": "12.18.3"
+  },
   "author": "Ivan Tachenko",
   "license": "MIT",
   "dependencies": {
