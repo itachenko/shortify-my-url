@@ -1,6 +1,8 @@
-const router = require("express").Router();
-const { getDbSize, getLongUrl } = require("../helpers/redis");
-const { messages } = require("../models/message");
+import * as express from "express";
+import { getDbSize, getLongUrl } from "../helpers/redis";
+import { messages } from "../models/message";
+
+const router = express.Router();
 
 router.get("/", async (req, res) => {
   res.render("index", {
@@ -9,15 +11,14 @@ router.get("/", async (req, res) => {
     count: await getDbSize(),
   });
 
-  messages.errorMessage = null;
-  messages.resultMessage = null;
+  messages.resetMessages();
 });
 
 router.get("/:url", async (req, res) => {
-  var longUrl = await getLongUrl(req.params.url);
+  const longUrl = await getLongUrl(req.params.url);
   if (!longUrl) return res.render("notFound");
 
   return res.redirect(longUrl);
 });
 
-module.exports = router;
+export default router;
