@@ -3,6 +3,9 @@
     "extends": [
         "tslint:recommended"
     ],
+    "linterOptions": {
+        "exclude": ["build/**/*.js"]
+    },
     "rules": {
         "ordered-imports": false
     }
