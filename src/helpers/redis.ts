@@ -38,13 +38,15 @@ export function checkIfExist(shortUrl: string): Promise<boolean> {
   });
 }
 
-export function saveShortUrl(shortUrl: string,longUrl: string): Promise<string> {
+export function saveShortUrl(
+  shortUrl: string,
+  longUrl: string
+): Promise<boolean> {
   return new Promise((resolve, reject) => {
     const ttl: number = parseInt(process.env.TTL_SECONDS as string, 10);
     redisClient.SETEX(shortUrl, ttl, longUrl, (err, data) => {
       if (err) reject(err);
-        resolve(data);
-      }
-    );
+      data === "OK" ? resolve(true) : resolve(false);
+    });
   });
 }
