@@ -105,6 +105,24 @@ class RedisHelpers {
       resolve(true);
     });
   }
+
+  /**
+   * Gets the value stored at field CLICKS_FIELDNAME for specified key.
+   * @param key key of the hash.
+   */
+  getClicksCount(key: string): Promise<number | null> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.HGET(
+        key,
+        RedisConstants.CLICKS_FIELDNAME,
+        (err, data) => {
+          if (err) reject(err);
+          if (data === null) resolve(null);
+          resolve(parseInt(data, 10));
+        }
+      );
+    });
+  }
 }
 
 export const redisHelpers = new RedisHelpers();

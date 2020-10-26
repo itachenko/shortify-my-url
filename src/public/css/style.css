@@ -12,11 +12,12 @@
     --clr-light: #FFF;
     --clr-error: #F70058;
     --clr-selected: #e9eee6;
+    --font: 'Work Sans', sans-serif;
 }
 
 body {
     background-color: var(--clr-background);
-    font-family: 'Work Sans', sans-serif;
+    font-family: var(--font);
     font-size: 1.125rem;
     color: var(--clr-dark);
     display: flex;
@@ -35,7 +36,8 @@ header {
     letter-spacing: 1px;
 }
 
-.main {
+.main,
+.footer {
     text-align: center;
     padding: 1em;
     margin: 1em;
@@ -55,7 +57,8 @@ header {
     max-width: 100%;
 }
 
-.main-form-input {
+.main-form-input,
+.stats-form-input {
     background-color: transparent;
     border: none;
     text-align: center;
@@ -63,22 +66,35 @@ header {
     transition: border-bottom-color 0.3s ease-in-out;
 }
 
-.main-form-input:focus {
+.main-form-input:focus,
+.stats-form-input:focus {
     outline: none;
     border-bottom-color: #56BC58;
   }
 
-.main-form-btn {
-    cursor: pointer;
-    font-size: 1rem;
-    padding: 0.75em 1.25rem;
+.main-form-btn,
+.stats-form-btn,
+.collapsable-btn {
     border: 1px solid;
     border-radius: 5px;
     background-color: transparent;
 }
 
+.main-form-btn {
+    font-size: 1rem;
+    padding: 0.75em 1.25rem;
+}
+
+.stats-form-btn,
+.collapsable-btn {
+    font-size: 0.8rem;
+    padding: 0.2em;
+    margin: 0.5em;
+}
+
 .main-form-btn:hover,
-.main-button-copy:hover {
+.main-button-copy:hover,
+.collapsable-btn:hover {
     cursor: pointer;
     background: var(--clr-selected);
     transition: all 0.3s ease;
@@ -100,7 +116,7 @@ header {
 }
 
 .main-button-copy {
-    font-family: 'Work Sans', sans-serif;
+    font-family: var(--font);
     font-weight: 400;
     background-color: transparent;
     border: none;
@@ -109,4 +125,11 @@ header {
     text-align: top right;
     border: 1px solid;
     border-radius: 5px;
+}
+
+.about {
+    display: none;
+    overflow: hidden;
+    font-size: 0.8rem;
+    text-align: center;
 }

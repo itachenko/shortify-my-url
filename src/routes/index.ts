@@ -1,6 +1,7 @@
 import { Request, Response, Router } from "express";
 import { redisHelpers } from "../helpers/redis";
 import { messages } from "../models/message";
+import { statistics } from "../models/stats";
 
 const router = Router();
 
@@ -8,10 +9,12 @@ router.get("/", async (req: Request, res: Response) => {
   res.render("index", {
     result: messages.resultMessage,
     error: messages.errorMessage,
+    statistics: statistics.stats,
     count: await redisHelpers.getDbSize(),
   });
 
-  messages.resetMessages();
+  messages.reset();
+  statistics.reset();
 });
 
 router.get("/:url", async (req, res) => {

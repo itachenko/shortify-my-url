@@ -5,6 +5,7 @@ import express from "express";
 import { join } from "path";
 import indexRouter from "./routes/index";
 import urlRouter from "./routes/url";
+import statsRouter from "./routes/stats";
 import logger from "./helpers/logger";
 import { utils } from "./helpers/utils";
 
@@ -20,6 +21,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/url", urlRouter);
+app.use("/stats", statsRouter);
 
 app.listen(process.env.PORT, () => {
   logger.info("Server is running");

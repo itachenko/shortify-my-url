@@ -4,7 +4,7 @@
 interface IMessage {
   resultMessage: string;
   errorMessage: string;
-  resetMessages(): void;
+  reset(): void;
 }
 
 /**
@@ -14,7 +14,7 @@ class Messages implements IMessage {
   resultMessage = "";
   errorMessage = "";
 
-  resetMessages() {
+  reset() {
     this.resultMessage = "";
     this.errorMessage = "";
   }

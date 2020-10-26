@@ -8,3 +8,11 @@ function copyToClipboard() {
   document.execCommand("Copy");
   textArea.remove();
 }
+
+function displayAbout() {
+  const aboutEl = document.getElementById("about");
+
+  aboutEl.style.display === "block" ?
+    aboutEl.style.display = "none" :
+    aboutEl.style.display = "block";
+}

@@ -15,5 +15,23 @@ append main
             button(class='main-button-copy', onclick='copyToClipboard()') Copy
         if error
             span(class='main-error') #{error}
+append footer
+    footer(class='footer')
+        form(class='stats-form', id='stats-form', action='/stats', method='POST')
+            input(class='stats-form-input', type='text', name='url', placeholder='Short URL')
+            input(class='stats-form-btn', type='submit', value='Get stats')
+        if statistics.url != ''
+            - var urlText = `Short URL: ${statistics.url}`
+            - var clicksText = `Clicks: ${statistics.clicksCount}`
+            p #{urlText}
+            p #{clicksText}
+        button(type="button" class="collapsable-btn", onclick='displayAbout()')= "About"
+        div(class='about', id='about')
+            p= "Free service to make your URLs short."
+            p= "The only limitation - short URL lifetime is 30 days."
+            br
+            p= "Get stats allows you to see how many times short URL has been used."
+            br
+            p= "Created by Ivan Tachenko (ivan.tachenko@gmail.com)"
 append script
     script(src='../js/script.js')
