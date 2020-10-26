@@ -1,14 +1,14 @@
-import * as express from "express";
-import { getDbSize, getLongUrl, incrClicks } from "../helpers/redis";
+import { Request, Response, Router } from "express";
+import { redisHelpers } from "../helpers/redis";
 import { messages } from "../models/message";
 
-const router = express.Router();
+const router = Router();
 
-router.get("/", async (req, res) => {
+router.get("/", async (req: Request, res: Response) => {
   res.render("index", {
     result: messages.resultMessage,
     error: messages.errorMessage,
-    count: await getDbSize(),
+    count: await redisHelpers.getDbSize(),
   });
 
   messages.resetMessages();
@@ -16,10 +16,10 @@ router.get("/", async (req, res) => {
 
 router.get("/:url", async (req, res) => {
   const shortUrl = req.params.url;
-  const longUrl = await getLongUrl(shortUrl);
+  const longUrl = await redisHelpers.getLongUrl(shortUrl);
   if (!longUrl) return res.render("notFound");
 
-  await incrClicks(shortUrl);
+  await redisHelpers.incrClicks(shortUrl);
   return res.redirect(longUrl);
 });
 

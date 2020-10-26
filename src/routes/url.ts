@@ -1,10 +1,10 @@
-import * as express from "express";
+import { Request, Response, Router } from "express";
 import { messages } from "../models/message";
 import { validateUrl, createShortUrl } from "../models/url";
 
-const router = express.Router();
+const router = Router();
 
-router.post("/", validateUrl, async (req, res) => {
+router.post("/", validateUrl, async (req: Request, res: Response) => {
   if (req.body.isValid === false) {
     messages.errorMessage = "Invalid URL";
     return res.redirect("/");
