@@ -1,5 +1,5 @@
 import * as express from "express";
-import { getDbSize, getLongUrl } from "../helpers/redis";
+import { getDbSize, getLongUrl, incrClicks } from "../helpers/redis";
 import { messages } from "../models/message";
 
 const router = express.Router();
@@ -15,9 +15,11 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:url", async (req, res) => {
-  const longUrl = await getLongUrl(req.params.url);
+  const shortUrl = req.params.url;
+  const longUrl = await getLongUrl(shortUrl);
   if (!longUrl) return res.render("notFound");
 
+  await incrClicks(shortUrl);
   return res.redirect(longUrl);
 });
 
