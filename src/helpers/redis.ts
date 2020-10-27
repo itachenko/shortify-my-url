@@ -1,6 +1,6 @@
 import { RedisClient, createClient } from "redis";
 import logger from "./logger";
-import { RedisConstants } from "../constants";
+import Constants from "../constants";
 
 /**
  * RedisHelpers class.
@@ -39,7 +39,7 @@ class RedisHelpers {
     return new Promise((resolve, reject) => {
       this.redisClient.HGET(
         shortUrl,
-        RedisConstants.LONGURL_FIELDNAME,
+        Constants.REDIS_LONGURL_FIELDNAME,
         (err, data) => {
           if (err) reject(err);
           resolve(data);
@@ -56,7 +56,7 @@ class RedisHelpers {
     return new Promise((resolve, reject) => {
       this.redisClient.HINCRBY(
         shortUrl,
-        RedisConstants.CLICKS_FIELDNAME,
+        Constants.REDIS_CLICKS_FIELDNAME,
         1,
         (err, data) => {
           if (err) reject(err);
@@ -91,9 +91,9 @@ class RedisHelpers {
       const ttl: number = parseInt(process.env.TTL_SECONDS as string, 10);
       this.redisClient.HMSET(
         shortUrl,
-        RedisConstants.LONGURL_FIELDNAME,
+        Constants.REDIS_LONGURL_FIELDNAME,
         longUrl,
-        RedisConstants.CLICKS_FIELDNAME,
+        Constants.REDIS_CLICKS_FIELDNAME,
         0,
         (err, data) => {
           if (err) reject(err);
@@ -114,7 +114,7 @@ class RedisHelpers {
     return new Promise((resolve, reject) => {
       this.redisClient.HGET(
         key,
-        RedisConstants.CLICKS_FIELDNAME,
+        Constants.REDIS_CLICKS_FIELDNAME,
         (err, data) => {
           if (err) reject(err);
           if (data === null) resolve(null);

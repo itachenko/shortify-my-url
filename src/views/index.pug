@@ -20,7 +20,7 @@ append footer
         form(class='stats-form', id='stats-form', action='/stats', method='POST')
             input(class='stats-form-input', type='text', name='url', placeholder='Short URL')
             input(class='stats-form-btn', type='submit', value='Get stats')
-        if statistics.url != ''
+        if statistics !== null
             - var urlText = `Short URL: ${statistics.url}`
             - var clicksText = `Clicks: ${statistics.clicksCount}`
             p #{urlText}
