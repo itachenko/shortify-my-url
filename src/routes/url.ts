@@ -7,16 +7,21 @@ import { redis } from "../modules/redis";
 
 const router = Router();
 
-router.post("/", validateUrl, requestRateLimiter, async (req: Request, res: Response) => {
-  const sessionId = req.session?.id as string;
-  const sessionData = {} as ISessionData;
+router.post(
+  "/",
+  validateUrl,
+  requestRateLimiter,
+  async (req: Request, res: Response) => {
+    const sessionId = req.session?.id as string;
+    const sessionData = {} as ISessionData;
 
-  const short = await createShortUrl(req.body.url);
-  sessionData.resultMessage = `${process.env.SITE_URL}/${short}`;
-  await redis.setSessionData(sessionId, JSON.stringify(sessionData));
+    const short = await createShortUrl(req.body.url);
+    sessionData.resultMessage = `${process.env.SITE_URL}/${short}`;
+    await redis.setSessionData(sessionId, JSON.stringify(sessionData));
 
-  return res.redirect("/");
-});
+    return res.redirect("/");
+  }
+);
 
 /**
  * Creates new short URL and saves it in the database.

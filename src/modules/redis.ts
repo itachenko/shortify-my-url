@@ -88,7 +88,8 @@ class RedisDataAccess {
    */
   saveShortUrl(shortUrl: string, longUrl: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const ttl: number = parseInt(process.env.SHORT_URL_TTL_DAYS as string, 10) * 24 * 60 * 60;
+      const ttl: number =
+        parseInt(process.env.SHORT_URL_TTL_DAYS as string, 10) * 24 * 60 * 60;
       this.redisClient.HMSET(
         shortUrl,
         Constants.REDIS_LONGURL_FIELDNAME,

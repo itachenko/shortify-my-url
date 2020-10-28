@@ -14,9 +14,9 @@ router.get("/", loadSessionData, async (req: Request, res: Response) => {
     result: sessionData.resultMessage,
     error: sessionData.errorMessage,
     statistics: sessionData.statsObject,
-    shortUrlLifetimeDays: shortUrlLifetimeDays,
-    requestLimitTimeHours: requestLimitTimeHours,
-    requestLimitCount: requestLimitCount,
+    shortUrlLifetimeDays,
+    requestLimitTimeHours,
+    requestLimitCount,
   };
 
   res.render(Constants.PUG_TEMPLATE_INDEX, renderOptions);

@@ -17,7 +17,10 @@ export async function validateUrl(
   } catch (error) {
     const sessionData = {} as ISessionData;
     sessionData.errorMessage = "Invalid URL";
-    await redis.setSessionData(req.session?.id as string, JSON.stringify(sessionData));
+    await redis.setSessionData(
+      req.session?.id as string,
+      JSON.stringify(sessionData)
+    );
 
     return res.redirect("/");
   }
