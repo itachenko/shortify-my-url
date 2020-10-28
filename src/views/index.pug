@@ -25,9 +25,12 @@ append footer
         button(type="button" class="collapsable-btn", onclick='displayAbout()')= "About"
         div(class='about', id='about')
             p= "Free service to make your URLs short."
-            p= "The only limitation - short URL lifetime is 30 days."
             br
             p= "Get stats allows you to see how many times short URL has been used."
+            br
+            p= "Limitations:"
+            p= `- short URL lifetime is ${shortUrlLifetimeDays} days.`
+            p= `- you can create only ${requestLimitCount} URLs in ${requestLimitTimeHours} hours.`
             br
             p= "Created by Ivan Tachenko (ivan.tachenko@gmail.com)"
 append script

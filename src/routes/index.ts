@@ -4,6 +4,9 @@ import { redis } from "../modules/redis";
 import { loadSessionData, resetSessionData } from "../middleware/sessionData";
 
 const router = Router();
+const shortUrlLifetimeDays = process.env.SHORT_URL_TTL_DAYS;
+const requestLimitTimeHours = process.env.REQUEST_RATE_LIMIT_HOURS;
+const requestLimitCount = process.env.REQUEST_RATE_LIMIT_COUNT;
 
 router.get("/", loadSessionData, async (req: Request, res: Response) => {
   const sessionData = res.locals.sessionData;
@@ -11,6 +14,9 @@ router.get("/", loadSessionData, async (req: Request, res: Response) => {
     result: sessionData.resultMessage,
     error: sessionData.errorMessage,
     statistics: sessionData.statsObject,
+    shortUrlLifetimeDays: shortUrlLifetimeDays,
+    requestLimitTimeHours: requestLimitTimeHours,
+    requestLimitCount: requestLimitCount,
   };
 
   res.render(Constants.PUG_TEMPLATE_INDEX, renderOptions);

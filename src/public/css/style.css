@@ -40,7 +40,8 @@ header {
 .footer {
     text-align: center;
     padding: 1em;
-    margin: 1em;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .main-form {
@@ -104,6 +105,10 @@ header {
     padding: 1rem;
     font-weight: 900;
     color: var(--clr-error);
+
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .main-count {
