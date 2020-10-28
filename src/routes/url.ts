@@ -10,13 +10,6 @@ router.post("/", validateUrl, async (req: Request, res: Response) => {
   const sessionId = req.session?.id as string;
   const sessionData = {} as ISessionData;
 
-  if (req.body.isValid === false) {
-    sessionData.errorMessage = "Invalid URL";
-    await redis.setSessionData(sessionId, JSON.stringify(sessionData));
-
-    return res.redirect("/");
-  }
-
   const short = await createShortUrl(req.body.url);
   sessionData.resultMessage = `${process.env.SITE_URL}/${short}`;
   await redis.setSessionData(sessionId, JSON.stringify(sessionData));
