@@ -82,13 +82,13 @@ class RedisDataAccess {
 
   /**
    * Saves new object in the database
-   * Sets a timeout on key specified in TTL_SECONDS environment variable.
+   * Sets a timeout on key specified in SHORT_URL_TTL_DAYS environment variable.
    * @param shortUrl key of the hash.
    * @param longUrl value to store at field LONGURL_FIELDNAME.
    */
   saveShortUrl(shortUrl: string, longUrl: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      const ttl: number = parseInt(process.env.TTL_SECONDS as string, 10);
+      const ttl: number = parseInt(process.env.SHORT_URL_TTL_DAYS as string, 10) * 24 * 60 * 60;
       this.redisClient.HMSET(
         shortUrl,
         Constants.REDIS_LONGURL_FIELDNAME,

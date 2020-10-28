@@ -14,7 +14,7 @@ utils.checkEnvironmentVariables([
   "PORT",
   "REDIS_URL",
   "SITE_URL",
-  "TTL_SECONDS",
+  "SHORT_URL_TTL_DAYS",
   "LOG_LEVEL",
   "SESSION_SECRET",
   "SESSION_TTL_SECONDS",
