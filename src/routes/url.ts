@@ -1,12 +1,13 @@
 import { Request, Response, Router } from "express";
 import { nanoid } from "nanoid";
+import { requestRateLimiter } from "../middleware/requestRateLimit";
 import { validateUrl } from "../middleware/url";
 import ISessionData from "../models/ISessionData";
 import { redis } from "../modules/redis";
 
 const router = Router();
 
-router.post("/", validateUrl, async (req: Request, res: Response) => {
+router.post("/", validateUrl, requestRateLimiter, async (req: Request, res: Response) => {
   const sessionId = req.session?.id as string;
   const sessionData = {} as ISessionData;
 
