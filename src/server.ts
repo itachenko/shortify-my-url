@@ -18,6 +18,8 @@ utils.checkEnvironmentVariables([
   "LOG_LEVEL",
   "SESSION_SECRET",
   "SESSION_TTL_SECONDS",
+  "REQUEST_RATE_LIMIT_HOURS",
+  "REQUEST_RATE_LIMIT_COUNT",
 ]);
 
 const app = express();
