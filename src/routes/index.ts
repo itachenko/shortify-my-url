@@ -1,38 +1,31 @@
 import { Request, Response, Router } from "express";
-import { redisHelpers } from "../helpers/redis";
 import Constants from "../constants";
+import { redis } from "../modules/redis";
+import { loadSessionData, resetSessionData } from "../middleware/sessionData";
 
 const router = Router();
 
-router.get("/", async (req: Request, res: Response) => {
+router.get("/", loadSessionData, async (req: Request, res: Response) => {
+  const sessionData = res.locals.sessionData;
   const renderOptions = {
-    result: res.app.get(Constants.MESSAGE_RESULT_KEY),
-    error: res.app.get(Constants.MESSAGE_ERROR_KEY),
-    count: await redisHelpers.getDbSize(),
-    statistics: null
+    result: sessionData.resultMessage,
+    error: sessionData.errorMessage,
+    statistics: sessionData.statsObject,
   };
 
-  if (res.app.get(Constants.MESSAGE_URL_STAT_KEY) !== undefined) {
-    renderOptions.statistics = JSON.parse(res.app.get(Constants.MESSAGE_URL_STAT_KEY));
-  }
   res.render(Constants.PUG_TEMPLATE_INDEX, renderOptions);
 
-  resetAppSettings(res);
+  resetSessionData(req.session?.id as string);
 });
 
 router.get("/:url", async (req, res) => {
   const shortUrl = req.params.url;
-  const longUrl = await redisHelpers.getLongUrl(shortUrl);
+  const longUrl = await redis.getLongUrl(shortUrl);
+
   if (!longUrl) return res.render(Constants.PUG_TEMPLATE_NOTFOUND);
 
-  await redisHelpers.incrClicks(shortUrl);
+  await redis.incrClicks(shortUrl);
   return res.redirect(longUrl);
 });
-
-function resetAppSettings(res: Response) {
-  res.app.set(Constants.MESSAGE_RESULT_KEY, null);
-  res.app.set(Constants.MESSAGE_ERROR_KEY, null);
-  res.app.set(Constants.MESSAGE_URL_STAT_KEY, null);
-}
 
 export default router;

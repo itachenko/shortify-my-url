@@ -5,8 +5,8 @@ import Constants from "../constants";
 /**
  * RedisHelpers class.
  */
-class RedisHelpers {
-  private redisClient: RedisClient;
+class RedisDataAccess {
+  public redisClient: RedisClient;
 
   constructor() {
     this.redisClient = createClient(process.env.REDIS_URL as string);
@@ -123,6 +123,36 @@ class RedisHelpers {
       );
     });
   }
+
+  /**
+   * Sets value of sessionData to specified sessionId.
+   * If sessionId does not exist - creates new.
+   * Sets TTL of the sessionData to SESSION_TTL_SECONDS.
+   * @param sessionId sessionId to store.
+   * @param sessionData string value to store.
+   */
+  setSessionData(sessionId: string, sessionData: string): Promise<void> {
+    return new Promise((resolve) => {
+      const ttl: number = parseInt(
+        process.env.SESSION_TTL_SECONDS as string,
+        10
+      );
+      this.redisClient.SETEX(sessionId, ttl, sessionData, () => resolve());
+    });
+  }
+
+  /**
+   * Gets session data of specified session.
+   * @param sessionId id of the session to retrieve data from.
+   */
+  getSessionData(sessionId: string): Promise<string | null> {
+    return new Promise((resolve, reject) => {
+      this.redisClient.GET(sessionId, (err, data) => {
+        if (err) reject(err);
+        resolve(data);
+      });
+    });
+  }
 }
 
-export const redisHelpers = new RedisHelpers();
+export const redis = new RedisDataAccess();

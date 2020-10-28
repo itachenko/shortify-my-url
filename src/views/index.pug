@@ -5,9 +5,6 @@ append main
         form(class='main-form', id='main-form', action='/url', method='POST')
             input(class='main-form-input', type='text', name='url', placeholder='Put your long URL here')
             input(class='main-form-btn', type='submit', value='Make it short!')
-        if count > 0
-            - var countText = `We've already shortified ${count} URLs`
-            p(class='main-count') #{countText}
         if result
             - var resultText = "Your short url is: "
             span #{resultText}
@@ -20,7 +17,7 @@ append footer
         form(class='stats-form', id='stats-form', action='/stats', method='POST')
             input(class='stats-form-input', type='text', name='url', placeholder='Short URL')
             input(class='stats-form-btn', type='submit', value='Get stats')
-        if statistics !== null
+        if statistics !== undefined
             - var urlText = `Short URL: ${statistics.url}`
             - var clicksText = `Clicks: ${statistics.clicksCount}`
             p #{urlText}

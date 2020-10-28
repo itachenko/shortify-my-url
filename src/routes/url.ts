@@ -1,18 +1,44 @@
 import { Request, Response, Router } from "express";
-import { validateUrl, createShortUrl } from "../models/url";
-import Constants from "../constants";
+import { nanoid } from "nanoid";
+import { validateUrl } from "../middleware/url";
+import ISessionData from "../models/ISessionData";
+import { redis } from "../modules/redis";
 
 const router = Router();
 
 router.post("/", validateUrl, async (req: Request, res: Response) => {
+  const sessionId = req.session?.id as string;
+  const sessionData = {} as ISessionData;
+
   if (req.body.isValid === false) {
-    res.app.set(Constants.MESSAGE_ERROR_KEY, "Invalid URL");
+    sessionData.errorMessage = "Invalid URL";
+    await redis.setSessionData(sessionId, JSON.stringify(sessionData));
+
     return res.redirect("/");
   }
 
   const short = await createShortUrl(req.body.url);
-  res.app.set(Constants.MESSAGE_RESULT_KEY, `${process.env.SITE_URL}/${short}`);
+  sessionData.resultMessage = `${process.env.SITE_URL}/${short}`;
+  await redis.setSessionData(sessionId, JSON.stringify(sessionData));
+
   return res.redirect("/");
 });
+
+/**
+ * Creates new short URL and saves it in the database.
+ * @param longUrl URL to shortify.
+ */
+async function createShortUrl(longUrl: string): Promise<string> {
+  let short: string;
+  let keyExist: boolean;
+
+  do {
+    short = nanoid(5).toLowerCase();
+    keyExist = await redis.checkIfExist(short);
+  } while (keyExist !== false);
+
+  await redis.saveShortUrl(short, longUrl);
+  return Promise.resolve(short);
+}
 
 export default router;
