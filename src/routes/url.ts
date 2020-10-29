@@ -1,15 +1,21 @@
 import { Request, Response, Router } from "express";
+import cors from "cors";
 import { nanoid } from "nanoid";
 import { requestRateLimiter } from "../middleware/requestRateLimit";
 import { checkOriginalUrlLength, validateUrl } from "../middleware/url";
 import ISessionData from "../models/ISessionData";
 import { redis } from "../modules/redis";
+import { corsOptions } from "../corsOptions";
 
-const router = Router();
-const shortUrlLength = parseInt(process.env.SHORL_URL_LENGTH as string, 10);
+const router: Router = Router();
+const shortUrlLength: number = parseInt(
+  process.env.SHORL_URL_LENGTH as string,
+  10
+);
 
 router.post(
   "/",
+  cors(corsOptions),
   validateUrl,
   checkOriginalUrlLength,
   requestRateLimiter,
