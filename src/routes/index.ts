@@ -2,15 +2,16 @@ import { Request, Response, Router } from "express";
 import Constants from "../constants";
 import { redis } from "../modules/redis";
 import { loadSessionData, resetSessionData } from "../middleware/sessionData";
+import IRenderOptions from "../models/IRenderOptions";
 
 const router = Router();
-const shortUrlLifetimeDays = process.env.SHORT_URL_TTL_DAYS;
-const requestLimitTimeHours = process.env.REQUEST_RATE_LIMIT_HOURS;
-const requestLimitCount = process.env.REQUEST_RATE_LIMIT_COUNT;
+const shortUrlLifetimeDays = process.env.SHORT_URL_TTL_DAYS as string;
+const requestLimitTimeHours = process.env.REQUEST_RATE_LIMIT_HOURS as string;
+const requestLimitCount = process.env.REQUEST_RATE_LIMIT_COUNT as string;
 
 router.get("/", loadSessionData, async (req: Request, res: Response) => {
   const sessionData = res.locals.sessionData;
-  const renderOptions = {
+  const renderOptions: IRenderOptions = {
     result: sessionData.resultMessage,
     error: sessionData.errorMessage,
     statistics: sessionData.statsObject,
