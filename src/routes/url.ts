@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
 import { nanoid } from "nanoid";
 import { requestRateLimiter } from "../middleware/requestRateLimit";
-import { validateUrl } from "../middleware/url";
+import { checkOriginalUrlLength, validateUrl } from "../middleware/url";
 import ISessionData from "../models/ISessionData";
 import { redis } from "../modules/redis";
 
@@ -11,6 +11,7 @@ const shortUrlLength = parseInt(process.env.SHORL_URL_LENGTH as string, 10);
 router.post(
   "/",
   validateUrl,
+  checkOriginalUrlLength,
   requestRateLimiter,
   async (req: Request, res: Response) => {
     const sessionId = req.session?.id as string;

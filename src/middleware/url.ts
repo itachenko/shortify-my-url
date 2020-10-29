@@ -26,3 +26,27 @@ export async function validateUrl(
   }
   next();
 }
+
+export async function checkOriginalUrlLength(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  const originalUrlLength = req.body.url.length;
+  const potentialShortUrlLength =
+    (process.env.SITE_URL as string).length +
+    parseInt(process.env.SHORL_URL_LENGTH as string, 10);
+
+  if (potentialShortUrlLength >= originalUrlLength) {
+    const sessionData = {} as ISessionData;
+    sessionData.errorMessage = `Result URL won't be shorter than original one`;
+    await redis.setSessionData(
+      req.session?.id as string,
+      JSON.stringify(sessionData)
+    );
+
+    return res.redirect("/");
+  }
+
+  next();
+}
