@@ -6,6 +6,7 @@ import ISessionData from "../models/ISessionData";
 import { redis } from "../modules/redis";
 
 const router = Router();
+const shortUrlLength = parseInt(process.env.SHORL_URL_LENGTH as string, 10);
 
 router.post(
   "/",
@@ -32,7 +33,7 @@ async function createShortUrl(longUrl: string): Promise<string> {
   let keyExist: boolean;
 
   do {
-    short = nanoid(5).toLowerCase();
+    short = nanoid(shortUrlLength).toLowerCase();
     keyExist = await redis.checkIfExist(short);
   } while (keyExist !== false);
 

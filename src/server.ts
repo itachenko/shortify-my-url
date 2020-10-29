@@ -20,6 +20,7 @@ utils.checkEnvironmentVariables([
   "SESSION_TTL_SECONDS",
   "REQUEST_RATE_LIMIT_HOURS",
   "REQUEST_RATE_LIMIT_COUNT",
+  "SHORL_URL_LENGTH",
 ]);
 
 const app = express();
