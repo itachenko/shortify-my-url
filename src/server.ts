@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 if (process.env.NODE_ENV !== "production") dotenv.config();
 
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import session from "express-session";
 import { join } from "path";
 import indexRouter from "./routes/index";
@@ -9,6 +9,7 @@ import urlRouter from "./routes/url";
 import statsRouter from "./routes/stats";
 import logger from "./modules/logger";
 import { utils } from "./utils";
+import Constants from "./constants";
 
 utils.checkEnvironmentVariables([
   "PORT",
@@ -41,6 +42,9 @@ app.use(
 app.use("/", indexRouter);
 app.use("/url", urlRouter);
 app.use("/stats", statsRouter);
+app.use((req: Request, res: Response, next: NextFunction) => {
+  return res.render(Constants.PUG_TEMPLATE_NOTFOUND);
+})
 
 app.listen(process.env.PORT, () => {
   logger.info("Server is running");
