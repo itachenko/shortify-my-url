@@ -8,7 +8,6 @@ interface ICopyConfiguration {
 }
 
 const toCopy: ICopyConfiguration[] = [
-  { source: "../src/views", target: "../build/views" },
   { source: "../src/public", target: "../build/public" },
 ];
 

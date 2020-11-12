@@ -1,5 +1,5 @@
 import { RedisClient, createClient } from "redis";
-import logger from "./logger";
+import { logger } from "./logger";
 import Constants from "../constants";
 
 /**

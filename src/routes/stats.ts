@@ -1,38 +1,31 @@
 import { Request, Response, Router } from "express";
-import cors from "cors";
-import { corsOptions } from "../corsOptions";
 import { validateUrl } from "../middleware/url";
-import ISessionData from "../models/ISessionData";
-import IUrlStatistics from "../models/IUrlStatistics";
 import { redis } from "../modules/redis";
 
 const router = Router();
 
-router.post(
-  "/",
-  cors(corsOptions),
-  validateUrl,
-  async (req: Request, res: Response) => {
-    const sessionId = req.session?.id as string;
-    const sessionData = {} as ISessionData;
+router.options("/", (req: Request, res: Response) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
 
-    const key: string = req.body.url.split("/").slice(-1)[0];
-    const clicksCount: number | null = await redis.getClicksCount(key);
-    if (clicksCount === null) {
-      sessionData.errorMessage = "Such short URL was not found in the system";
-      await redis.setSessionData(
-        req.session?.id as string,
-        JSON.stringify(sessionData)
-      );
-    } else {
-      sessionData.statsObject = {
-        url: req.body.url,
-        clicksCount,
-      } as IUrlStatistics;
-      await redis.setSessionData(sessionId, JSON.stringify(sessionData));
-    }
-    return res.redirect("/");
+  return res.status(200).send();
+});
+
+router.post("/", validateUrl, async (req: Request, res: Response) => {
+  const key: string = req.body.url.split("/").slice(-1)[0];
+  const clicksCount: number | null = await redis.getClicksCount(key);
+  if (clicksCount === null) {
+    return res
+      .header("Access-Control-Allow-Origin", "*")
+      .status(500)
+      .send({ error: "Such short URL was not found in the system" });
+  } else {
+    return res
+      .header("Access-Control-Allow-Origin", "*")
+      .status(200)
+      .send({ url: req.body.url, clicksCount });
   }
-);
+});
 
 export default router;

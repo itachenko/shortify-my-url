@@ -1,51 +1,30 @@
 import { Request, Response, Router } from "express";
-import cors from "cors";
-import { nanoid } from "nanoid";
 import { requestRateLimiter } from "../middleware/requestRateLimit";
 import { checkOriginalUrlLength, validateUrl } from "../middleware/url";
-import ISessionData from "../models/ISessionData";
-import { redis } from "../modules/redis";
-import { corsOptions } from "../corsOptions";
+import { createShortUrl } from "../modules/url";
 
 const router: Router = Router();
-const shortUrlLength: number = parseInt(
-  process.env.SHORL_URL_LENGTH as string,
-  10
-);
+
+router.options("/", (req: Request, res: Response) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "POST");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+
+  return res.status(200).send();
+});
 
 router.post(
   "/",
-  cors(corsOptions),
   validateUrl,
   checkOriginalUrlLength,
   requestRateLimiter,
   async (req: Request, res: Response) => {
-    const sessionId = req.session?.id as string;
-    const sessionData = {} as ISessionData;
-
     const short = await createShortUrl(req.body.url);
-    sessionData.resultMessage = `${process.env.SITE_URL}/${short}`;
-    await redis.setSessionData(sessionId, JSON.stringify(sessionData));
-
-    return res.redirect("/");
+    return res
+      .header("Access-Control-Allow-Origin", "*")
+      .status(200)
+      .send({ shortUrl: `${process.env.SITE_URL}/${short}` });
   }
 );
-
-/**
- * Creates new short URL and saves it in the database.
- * @param longUrl URL to shortify.
- */
-async function createShortUrl(longUrl: string): Promise<string> {
-  let short: string;
-  let keyExist: boolean;
-
-  do {
-    short = nanoid(shortUrlLength).toLowerCase();
-    keyExist = await redis.checkIfExist(short);
-  } while (keyExist !== false);
-
-  await redis.saveShortUrl(short, longUrl);
-  return Promise.resolve(short);
-}
 
 export default router;

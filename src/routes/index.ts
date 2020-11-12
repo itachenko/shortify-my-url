@@ -1,35 +1,13 @@
 import { Request, Response, Router } from "express";
-import Constants from "../constants";
 import { redis } from "../modules/redis";
-import { loadSessionData, resetSessionData } from "../middleware/sessionData";
-import IRenderOptions from "../models/IRenderOptions";
 
-const router = Router();
-const shortUrlLifetimeDays = process.env.SHORT_URL_TTL_DAYS as string;
-const requestLimitTimeHours = process.env.REQUEST_RATE_LIMIT_HOURS as string;
-const requestLimitCount = process.env.REQUEST_RATE_LIMIT_COUNT as string;
+const router: Router = Router();
 
-router.get("/", loadSessionData, async (req: Request, res: Response) => {
-  const sessionData = res.locals.sessionData;
-  const renderOptions: IRenderOptions = {
-    result: sessionData.resultMessage,
-    error: sessionData.errorMessage,
-    statistics: sessionData.statsObject,
-    shortUrlLifetimeDays,
-    requestLimitTimeHours,
-    requestLimitCount,
-  };
-
-  res.render(Constants.PUG_TEMPLATE_INDEX, renderOptions);
-
-  resetSessionData(req.session?.id as string);
-});
-
-router.get("/:url", async (req, res) => {
+router.get("/:url", async (req: Request, res: Response) => {
   const shortUrl = req.params.url;
   const longUrl = await redis.getLongUrl(shortUrl);
 
-  if (!longUrl) return res.render(Constants.PUG_TEMPLATE_NOTFOUND);
+  if (!longUrl) return res.redirect("/notFound.html");
 
   await redis.incrClicks(shortUrl);
   return res.redirect(longUrl);

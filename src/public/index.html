@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap"
+    />
+    <title>Shortify My URL</title>
+  </head>
+  <body>
+    <div id="app">
+      <header>
+        <h1 class="title">Shortify My URL</h1>
+      </header>
+      <main class="main">
+        <div class="main-form" id="main-form">
+          <input
+            v-model="urlForm.longUrl"
+            class="main-form-input"
+            type="text"
+            placeholder="Put your long URL here"
+            autocomplete="off"
+          />
+          <button v-on:click="submitForm" class="main-form-btn">
+            Make it short!
+          </button>
+          <div v-if="info">
+            <span>Your short url is: </span>
+            <span class="main-result" id="main-result">{{info}}</span>
+            <button v-on:click="copyToClipboard" class='main-button-copy'>Copy</button>
+          </div>
+          <div v-if="error">
+            <span class="main-error">{{error}}</span>
+          </div>
+        </div>
+      </main>
+      <footer class="footer">
+        <div class="stats-form" id="stats-form">
+          <input
+            v-model="urlForm.shortUrl"
+            class="stats-form-input"
+            type="text"
+            placeholder="Short URL"
+            autocomplete="off"
+          />
+          <button v-on:click="submitStatsForm" class="stats-form-btn">
+            Get stats
+          </button>
+        </div>
+
+        <div v-if="stats">
+          <p>Short URL: {{stats.url}}</p>
+          <p>Clicks: {{stats.clicksCount}}</p>
+        </div>
+
+        <button
+          v-on:click="displayAbout = !displayAbout"
+          class="collapsable-btn"
+        >
+          About
+        </button>
+        <div v-if="displayAbout" class="about" id="about">
+          <p>Free service to make your URLs short.</p>
+          <br />
+          <p>
+            Get stats allows you to see how many times short URL has been used.
+          </p>
+          <br />
+          <p>Limitations:</p>
+          <p>- short URL lifetime is {{limitations.shortUrlTTL}} days.</p>
+          <p>- you can create only {{limitations.requestRateLimitCount}} URLs in {{limitations.requestRateLimitHours}} hours.</p>
+          <br />
+          <p>Created by Ivan Tachenko (ivan.tachenko@gmail.com)</p>
+        </div>
+      </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>
