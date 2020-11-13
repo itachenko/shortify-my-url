@@ -1,12 +1,10 @@
 var app = new Vue({
   el: "#app",
   data: {
-    error: null,
-    info: null,
-    urlForm: {
-      longUrl: null,
-      shortUrl: null,
-    },
+    errorMessage: null,
+    result: null,
+    longUrl: null,
+    shortUrl: null,
     stats: null,
     displayAbout: false,
     limitations: {
@@ -20,23 +18,23 @@ var app = new Vue({
       this.resetData();
       axios
         .post("/api/url", {
-          url: this.urlForm.longUrl,
+          url: this.longUrl,
         })
-        .then((response) => (this.info = response.data.shortUrl))
-        .catch((error) => (this.error = error.response.data.error));
+        .then((response) => (this.result = response.data.shortUrl))
+        .catch((error) => (this.errorMessage = error.response.data.error));
     },
     submitStatsForm() {
       this.resetData();
       axios
         .post("/api/stats", {
-          url: this.urlForm.shortUrl,
+          url: this.shortUrl,
         })
         .then((response) => (this.stats = response.data))
-        .catch((error) => (this.error = error.response.data.error));
+        .catch((error) => (this.errorMessage = error.response.data.error));
     },
     resetData() {
-      this.error = null;
-      this.info = null;
+      this.errorMessage = null;
+      this.result = null;
       this.stats = null;
     },
     copyToClipboard() {

@@ -19,7 +19,7 @@
       <main class="main">
         <div class="main-form" id="main-form">
           <input
-            v-model="urlForm.longUrl"
+            v-model="longUrl"
             class="main-form-input"
             type="text"
             placeholder="Put your long URL here"
@@ -28,20 +28,20 @@
           <button v-on:click="submitForm" class="main-form-btn">
             Make it short!
           </button>
-          <div v-if="info">
+          <div v-if="result">
             <span>Your short url is: </span>
-            <span class="main-result" id="main-result">{{info}}</span>
+            <span class="main-result" id="main-result">{{result}}</span>
             <button v-on:click="copyToClipboard" class='main-button-copy'>Copy</button>
           </div>
-          <div v-if="error">
-            <span class="main-error">{{error}}</span>
+          <div v-if="errorMessage">
+            <span class="main-error">{{errorMessage}}</span>
           </div>
         </div>
       </main>
       <footer class="footer">
         <div class="stats-form" id="stats-form">
           <input
-            v-model="urlForm.shortUrl"
+            v-model="shortUrl"
             class="stats-form-input"
             type="text"
             placeholder="Short URL"
