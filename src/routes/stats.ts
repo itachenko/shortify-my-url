@@ -6,14 +6,6 @@ import { corsOptions } from "../corsOptions";
 
 const router = Router();
 
-router.options("/", (req: Request, res: Response) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "POST");
-  res.header("Access-Control-Allow-Headers", "Content-Type");
-
-  return res.status(200).send();
-});
-
 router.post(
   "/",
   cors(corsOptions),
