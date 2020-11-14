@@ -1,3 +1,6 @@
+const axios = require("axios");
+const Vue = require("vue/dist/vue");
+
 var app = new Vue({
   el: "#app",
   data: {
@@ -49,8 +52,6 @@ var app = new Vue({
     },
   },
   mounted() {
-    axios
-      .get("/api/config")
-      .then(({ data }) => (this.limitations = data))
+    axios.get("/api/config").then(({ data }) => (this.limitations = data));
   },
 });

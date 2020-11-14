@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="/css/style.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;900&display=swap"
     />
-    <link rel="icon" type="image/ico" href="/favicon.ico"/>
+    <link rel="icon" type="image/ico" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/style.css" />
     <title>Shortify My URL</title>
   </head>
   <body>
@@ -31,7 +31,9 @@
           <div v-if="result">
             <span>Your short url is: </span>
             <span class="main-result" id="main-result">{{result}}</span>
-            <button v-on:click="copyToClipboard" class='main-button-copy'>Copy</button>
+            <button v-on:click="copyToClipboard" class="main-button-copy">
+              Copy
+            </button>
           </div>
           <div v-if="errorMessage">
             <span class="main-error">{{errorMessage}}</span>
@@ -72,14 +74,15 @@
           <br />
           <p>Limitations:</p>
           <p>- short URL lifetime is {{limitations.shortUrlTTL}} days.</p>
-          <p>- you can create only {{limitations.requestRateLimitCount}} URLs in {{limitations.requestRateLimitHours}} hours.</p>
+          <p>
+            - you can create only {{limitations.requestRateLimitCount}} URLs in
+            {{limitations.requestRateLimitHours}} hours.
+          </p>
           <br />
           <p>Created by Ivan Tachenko (ivan.tachenko@gmail.com)</p>
         </div>
       </footer>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="/js/index.js"></script>
+    <script src="js/index.js"></script>
   </body>
 </html>
