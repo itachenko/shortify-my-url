@@ -19,21 +19,25 @@ var app = new Vue({
   methods: {
     submitForm() {
       this.resetData();
+
       axios
         .post("/api/url", {
           url: this.longUrl,
         })
         .then((response) => (this.result = response.data.shortUrl))
         .catch((error) => (this.errorMessage = error.response.data.error));
+      this.longUrl = null;
     },
     submitStatsForm() {
       this.resetData();
+
       axios
         .post("/api/stats", {
           url: this.shortUrl,
         })
         .then((response) => (this.stats = response.data))
         .catch((error) => (this.errorMessage = error.response.data.error));
+      this.shortUrl = null;
     },
     resetData() {
       this.errorMessage = null;
