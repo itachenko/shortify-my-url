@@ -1,3 +1,4 @@
+require("regenerator-runtime");
 const axios = require("axios");
 const Vue = require("vue/dist/vue");
 
@@ -17,16 +18,27 @@ var app = new Vue({
     },
   },
   methods: {
-    submitForm() {
+    async submitForm() {
       this.resetData();
 
-      axios
-        .post("/api/url", {
-          url: this.longUrl,
-        })
-        .then((response) => (this.result = response.data.shortUrl))
-        .catch((error) => (this.errorMessage = error.response.data.error));
-      this.longUrl = null;
+      const locallyStoredUrl = localStorage.getItem(this.longUrl);
+
+      if (locallyStoredUrl) {
+        this.result = locallyStoredUrl;
+        this.longUrl = null;
+      } else {
+        try {
+          const response = await axios.post("/api/url", {
+            url: this.longUrl,
+          });
+          localStorage.setItem(this.longUrl, response.data.shortUrl);
+          this.result = response.data.shortUrl;
+          this.longUrl = null;
+        } catch (error) {
+          this.errorMessage = error.response.data.error;
+          this.longUrl = null;
+        }
+      }
     },
     submitStatsForm() {
       this.resetData();
