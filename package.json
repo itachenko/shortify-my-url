@@ -6,8 +6,8 @@
   "scripts": {
     "build-frontend": "cd frontend && npm install && npm run build",
     "build-backend": "tsc",
-    "postinstall": "npm run build-backend && npm run build-frontend",
-    "start": "node dist/server.js",
+    "postinstall": "NODE_ENV=development && npm run build-backend && npm run build-frontend",
+    "start": "NODE_ENV=production && node dist/server.js",
     "tslint": "tslint --project tsconfig.json",
     "dev": "nodemon src/server.ts"
   },
