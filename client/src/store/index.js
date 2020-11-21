@@ -49,7 +49,7 @@ const actions = {
       commit("setErrorMessage", "URL should not be empty");
       return false;
     }
-    const regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+    const regex = /(?:^|\s)((https?:\/\/)?(?:localhost|[\w-]+(?:\.[\w-]+)+)(:\d+)?(\/\S*)?)/;
     if (!regex.test(url)) {
       commit("setErrorMessage", "Invalid URL");
       return false;
