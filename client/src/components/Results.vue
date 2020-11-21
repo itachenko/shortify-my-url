@@ -1,13 +1,13 @@
 <template>
   <div v-if="resultMessage || errorMessage || stats.url" class="main">
-    <div v-if="resultMessage">
+    <div v-if="resultMessage" id="result-message">
       <span>Your short url is: </span>
       <span class="result-message">{{ resultMessage }}</span>
       <button v-on:click="copyToClipboard" class="result-message-btn">
         Copy
       </button>
     </div>
-    <div v-if="stats.url">
+    <div v-if="stats.url" id="stats-message">
       <p>Short URL: {{ stats.url }}</p>
       <p>Clicks: {{ stats.clicksCount }}</p>
     </div>
