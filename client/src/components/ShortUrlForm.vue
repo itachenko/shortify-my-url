@@ -33,7 +33,10 @@ export default {
     ...mapActions(["makeShortUrl", "validateInputUrl"]),
     async onSubmit() {
       this.resetState();
-      if (!(await this.validateInputUrl(this.longUrl))) return;
+      if (!(await this.validateInputUrl(this.longUrl))) {
+        this.longUrl = null;
+        return;
+      }
 
       const locallyStoredUrl = this.getFromLocalStorage(this.longUrl);
 

@@ -28,7 +28,10 @@ export default {
     ...mapMutations(["resetState"]),
     async onSubmit() {
       this.resetState();
-      if (!(await this.validateInputUrl(this.shortUrl))) return;
+      if (!(await this.validateInputUrl(this.shortUrl))) {
+        this.shortUrl = null;
+        return;
+      }
 
       this.getStats(this.shortUrl);
       this.shortUrl = null;

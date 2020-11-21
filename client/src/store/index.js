@@ -44,9 +44,14 @@ const actions = {
       commit("setErrorMessage", error.response.data.error);
     }
   },
-   validateInputUrl({ commit }, url) {
+  validateInputUrl({ commit }, url) {
     if (!url) {
       commit("setErrorMessage", "URL should not be empty");
+      return false;
+    }
+    const regex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+    if (!regex.test(url)) {
+      commit("setErrorMessage", "Invalid URL");
       return false;
     }
 
