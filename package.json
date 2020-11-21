@@ -8,6 +8,7 @@
     "server": "nodemon src/server.ts --ignore 'client/'",
     "client": "npm run serve --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-prebuild": "cd ./client && npm install",
     "build": "tsc --sourceMap false && npm run build --prefix client",
     "start": "node dist/server.js",
     "tslint": "tslint --project tsconfig.json"
