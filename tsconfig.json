@@ -68,6 +68,6 @@
   },
   "exclude": [
     "dist",
-    "frontend"
+    "client"
   ],
 }

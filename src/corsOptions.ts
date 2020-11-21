@@ -1,6 +1,8 @@
+var allowlist = [process.env.SITE_URL, process.env.CLIENT_URL_LOCAL];
+
 export const corsOptions = {
   origin: (origin: any, callback: any) => {
-    if (origin === process.env.SITE_URL) {
+    if (allowlist.includes(origin)) {
       return callback(null, true);
     } else {
       const msg =
