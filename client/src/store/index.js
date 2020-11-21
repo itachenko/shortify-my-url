@@ -44,6 +44,14 @@ const actions = {
       commit("setErrorMessage", error.response.data.error);
     }
   },
+   validateInputUrl({ commit }, url) {
+    if (!url) {
+      commit("setErrorMessage", "URL should not be empty");
+      return false;
+    }
+
+    return true;
+  },
 };
 
 export default new Vuex.Store({

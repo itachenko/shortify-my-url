@@ -30,9 +30,10 @@ export default {
   },
   methods: {
     ...mapMutations(["setResultMessage", "resetState"]),
-    ...mapActions(["makeShortUrl"]),
+    ...mapActions(["makeShortUrl", "validateInputUrl"]),
     async onSubmit() {
       this.resetState();
+      if (!(await this.validateInputUrl(this.longUrl))) return;
 
       const locallyStoredUrl = this.getFromLocalStorage(this.longUrl);
 

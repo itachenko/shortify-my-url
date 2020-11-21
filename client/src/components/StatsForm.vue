@@ -24,10 +24,12 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["getStats"]),
+    ...mapActions(["getStats", "validateInputUrl"]),
     ...mapMutations(["resetState"]),
-    onSubmit() {
+    async onSubmit() {
       this.resetState();
+      if (!(await this.validateInputUrl(this.shortUrl))) return;
+
       this.getStats(this.shortUrl);
       this.shortUrl = null;
     },
