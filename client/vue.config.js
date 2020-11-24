@@ -8,7 +8,7 @@ module.exports = {
   outputDir: staticDir,
   productionSourceMap: false,
   configureWebpack: {
-    plugins: [
+    plugins: process.env.NODE_ENV === 'production' ? [
       new PrerenderSPAPlugin({
         staticDir: staticDir,
         routes: ["/", "/404"],
@@ -17,7 +17,7 @@ module.exports = {
           headless: true,
         }),
       }),
-    ],
+    ] : [],
     devServer: {
       proxy: {
         "/api": {
