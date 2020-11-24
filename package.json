@@ -13,7 +13,7 @@
     "build": "tsc --sourceMap false && npm run build --prefix client",
     "start": "node dist/server.js",
 
-    "test": "npm run test:e2e --prefix client ",
+    "test": "cypress run",
     "tslint": "tslint --project tsconfig.json"
   },
   "keywords": [
